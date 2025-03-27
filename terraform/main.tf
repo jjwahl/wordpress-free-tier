@@ -8,14 +8,6 @@ resource "aws_vpc" "wp_vpc" {
   tags = { Name = "wordpress-free-tier" }
 }
 
-
-resource "aws_instance" "wordpress" {
-  ami = "ami-0c55b159cbfafe1f0"
-  instance_type = "t2.micro"
-  user_data = file("user_data.sh")    #wp_install_script
-  tags = { Name = "wordpress-free-tier" }
-}
-
 resource "aws_db_instance" "wordpress_db" {
   allocated_storage = 20
   engine  = "mysql"

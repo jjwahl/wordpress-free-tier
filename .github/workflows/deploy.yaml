@@ -24,9 +24,3 @@ jobs:
           cd terraform
           terraform init -input=false
           terraform apply -auto-approve -input=false
-
-      - name: Upload WordPress Files
-        run: |
-          cd terraform
-          scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} \
-            user_data.sh ec2-user@$(terraform output -raw public_ip):/tmp/
