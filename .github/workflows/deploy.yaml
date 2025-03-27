@@ -1,0 +1,22 @@
+name: Free Tier WordPress Deploy
+on: [push]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: Terraform Apply
+        run: |
+          cd terraform
+          terraform init -input=false
+          terraform apply -auto-approve -input=false
+- name: Upload WordPress Files
+  run: |
+    scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} user_data.sh ec2-user@$(terraform output -raw public_ip):/tmp/
