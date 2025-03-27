@@ -12,7 +12,6 @@ resource "aws_db_instance" "wordpress_db" {
   allocated_storage = 20
   engine  = "mysql"
   instance_class = "db.t2.micro"
-  name = "wordpressdb"
   username = "admin"
   password = var.db_password
   skip_final_snapshot = true
