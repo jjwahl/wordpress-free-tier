@@ -22,19 +22,3 @@ jobs:
       - name: Upload WordPress Files
         run: |
           scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} user_data.sh ec2-user@$(terraform output -raw public_ip):/tmp/
-name: Destroy Infrastructure
-on:
-  workflow_dispatch:
-jobs:
-  destroy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-      - uses: hashicorp/setup-terraform@v2
-      - run: terraform init
-      - run: terraform destroy -auto-approve
