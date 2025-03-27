@@ -4,11 +4,11 @@ resource "aws_key_pair" "wp_key" {
 }
 
 resource "aws_instance" "wordpress" {
-  ami           = "ami-0c55b159cbfafe1f0" # Amazon Linux 2
+  ami           = "ami-0b0dcb5067f056a3f"
   instance_type = "t2.micro"
   key_name      = aws_key_pair.wp_key.key_name
 
-  user_data = file("user_data.sh") # Add this line
+  user_data = file("user_data.sh")
 
   tags = {
     Name = "wordpress-free-tier"
