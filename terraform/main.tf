@@ -11,6 +11,7 @@ resource "aws_vpc" "wp_vpc" {
 resource "aws_db_instance" "wordpress_db" {
   allocated_storage = 20
   engine  = "mysql"
+  engine_version = "5.7.42"
   instance_class = "db.t2.micro"
   username = "admin"
   password = var.db_password
