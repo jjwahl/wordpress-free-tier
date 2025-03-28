@@ -7,7 +7,18 @@ data "aws_vpc" "default" {
   default = true
 }
 
+resource "aws_db_subnet_group" "default" {
+  name       = "wordpress-subnet-group"
+  subnet_ids = [aws_subnet.public_1.id, aws_subnet.public_2.id]
+
+  tags = {
+    Name = "WordPress DB Subnet Group"
+  }
+}
+
+
 resource "aws_db_instance" "wordpress_db" {
+  db_subnet_group_name = aws_db_subnet_group.default.name
   allocated_storage  = 20
   engine = "mysql"
   engine_version = "8.0.35"
