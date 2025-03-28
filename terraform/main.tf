@@ -3,15 +3,14 @@ provider "aws" {
 }
 
 
-resource "aws_vpc" "wp_vpc" {
-  cidr_block = "10.0.0.0/16"
-  tags = { Name = "wordpress-free-tier" }
+data "aws_vpc" "default" {
+  default = true
 }
 
 resource "aws_db_instance" "wordpress_db" {
   allocated_storage = 20
   engine  = "mysql"
-  engine_version = "5.7.42"
+  engine_version = "5.7.44"
   instance_class = "db.t2.micro"
   username = "admin"
   password = var.db_password
