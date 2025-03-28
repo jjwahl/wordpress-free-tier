@@ -8,14 +8,16 @@ data "aws_vpc" "default" {
 }
 
 resource "aws_db_instance" "wordpress_db" {
-  allocated_storage = 20
-  engine  = "mysql"
-  engine_version = "5.7.44"
-  instance_class = "db.t2.micro"
-  username = "admin"
-  password = var.db_password
-  parameter_group_name = "default.mysql5.7"
-  skip_final_snapshot = true
+  allocated_storage    = 20
+  engine               = "mysql"
+  engine_version       = "8.0.35"
+  instance_class       = "db.t3.micro"
+  parameter_group_name = "default.mysql8.0"
+  skip_final_snapshot  = true
+  username             = "admin"
+  password             = var.db_password
+  storage_type         = "gp2"
+  publicly_accessible  = false
 }
 
 
