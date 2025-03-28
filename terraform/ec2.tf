@@ -20,7 +20,7 @@ resource "aws_instance" "wordpress" {
   instance_type = "t3.micro"
   key_name = aws_key_pair.wp_key.key_name
   user_data = file("user_data.sh")
-
+  vpc_security_group_ids = [aws_security_group.web.id]
   tags = {
     Name = "wordpress-free-tier"
   }
