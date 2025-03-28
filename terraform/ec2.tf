@@ -16,10 +16,10 @@ data "aws_ami" "amazon_linux" {
 
 
 resource "aws_instance" "wordpress" {
-  ami           = data.aws_ami.amazon_linux.id
+  ami = data.aws_ami.amazon_linux.id
   instance_type = "t3.micro"
-  key_name      = aws_key_pair.wp_key.key_name
-  user_data     = file("user_data.sh")
+  key_name = aws_key_pair.wp_key.key_name
+  user_data = file("user_data.sh")
 
   tags = {
     Name = "wordpress-free-tier"
