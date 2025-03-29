@@ -21,6 +21,7 @@ resource "aws_subnet" "public_2" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = "10.0.2.0/24"
   availability_zone = "us-east-1b"
+  map_public_ip_on_launch = true
   tags = {
     Name = "public-2"
   }
@@ -77,16 +78,6 @@ resource "aws_network_acl_rule" "inbound_http" {
   to_port        = 80
 }
 
-resource "aws_network_acl_rule" "inbound_https" {
-  network_acl_id = aws_network_acl.public_nacl.id
-  rule_number    = 110
-  egress         = false
-  protocol       = "tcp"
-  rule_action    = "allow"
-  cidr_block     = "0.0.0.0/0"
-  from_port      = 443
-  to_port        = 443
-}
 
 resource "aws_network_acl_rule" "inbound_ssh" {
   network_acl_id = aws_network_acl.public_nacl.id
@@ -94,8 +85,7 @@ resource "aws_network_acl_rule" "inbound_ssh" {
   egress         = false
   protocol       = "tcp"
   rule_action    = "allow"
-  cidr_block     = "0.0.0.0/0"  # Replace with your public IP (e.g., "123.45.67.89/32")
-  from_port      = 22
+  cidr_block     = "0.0.0.0/0"
   to_port        = 22
 }
 
@@ -110,16 +100,6 @@ resource "aws_network_acl_rule" "outbound_http" {
   to_port        = 80
 }
 
-resource "aws_network_acl_rule" "outbound_https" {
-  network_acl_id = aws_network_acl.public_nacl.id
-  rule_number    = 110
-  egress         = true
-  protocol       = "tcp"
-  rule_action    = "allow"
-  cidr_block     = "0.0.0.0/0"
-  from_port      = 443
-  to_port        = 443
-}
 
 resource "aws_network_acl_rule" "outbound_ephemeral" {
   network_acl_id = aws_network_acl.public_nacl.id

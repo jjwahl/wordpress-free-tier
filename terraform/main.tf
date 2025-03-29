@@ -23,7 +23,7 @@ resource "aws_db_instance" "wordpress_db" {
   username = "admin"
   password = var.db_password
   storage_type = "gp2"
-  publicly_accessible = true
+  publicly_accessible = false
 }
 
 resource "aws_security_group" "web" {
