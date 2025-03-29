@@ -39,7 +39,6 @@ jobs:
       - name: Terraform Apply
         if: github.event_name == 'push' || github.event.inputs.action == 'apply'
         run:  |
-          cd terraform
           terraform apply -auto-approve -input=false
         working-directory: ./terraform
         env:
@@ -48,7 +47,6 @@ jobs:
       - name: Terraform Destroy
         if: github.event.inputs.action == 'destroy'
         run:  |
-          cd terraform
           terraform destroy -auto-approve -input=false
         working-directory: ./terraform
         env:
