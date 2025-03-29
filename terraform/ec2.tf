@@ -20,6 +20,7 @@ resource "aws_instance" "wordpress" {
   instance_type = "t3.micro"
   key_name = aws_key_pair.wp_key.key_name
   user_data = file("user_data.sh")
+  associate_public_ip_address = true
   subnet_id     = aws_subnet.public_1.id
   vpc_security_group_ids = [aws_security_group.web.id]
   tags = {
