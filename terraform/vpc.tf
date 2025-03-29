@@ -67,25 +67,36 @@ resource "aws_network_acl" "public_nacl" {
   }
 }
 
-resource "aws_network_acl_rule" "inbound_all" {
+resource "aws_network_acl_rule" "inbound_http" {
   network_acl_id = aws_network_acl.public_nacl.id
-  rule_number    = 90    # Lower number = higher priority
+  rule_number    = 100
   egress         = false
-  protocol       = "-1"  # All protocols
+  protocol       = "tcp"
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
-  from_port      = 0
-  to_port        = 0
+  from_port      = 80
+  to_port        = 80
 }
 
-# Outbound
-resource "aws_network_acl_rule" "outbound_all" {
+resource "aws_network_acl_rule" "inbound_ssh" {
   network_acl_id = aws_network_acl.public_nacl.id
-  rule_number    = 90
-  egress         = true
-  protocol       = "-1"
+  rule_number    = 110
+  egress         = false
+  protocol       = "tcp"
   rule_action    = "allow"
   cidr_block     = "0.0.0.0/0"
-  from_port      = 0
-  to_port        = 0
+  from_port      = 22
+  to_port        = 22
+}
+
+# Outbound Rules (Traffic from EC2)
+resource "aws_network_acl_rule" "outbound_ephemeral" {
+  network_acl_id = aws_network_acl.public_nacl.id
+  rule_number    = 100
+  egress         = true
+  protocol       = "tcp"
+  rule_action    = "allow"
+  cidr_block     = "0.0.0.0/0"
+  from_port      = 1024
+  to_port        = 65535
 }
