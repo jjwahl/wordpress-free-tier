@@ -2,11 +2,6 @@ provider "aws" {
   region = "us-east-1"
 }
 
-
-data "aws_vpc" "default" {
-  default = true
-}
-
 resource "aws_db_subnet_group" "default" {
   name       = "wordpress-subnet-group"
   subnet_ids = [aws_subnet.public_1.id, aws_subnet.public_2.id]
