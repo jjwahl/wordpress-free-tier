@@ -66,7 +66,6 @@ resource "aws_network_acl" "public_nacl" {
     Name = "wordpress-public-nacl"
   }
 }
-
 resource "aws_network_acl_rule" "inbound_http" {
   network_acl_id = aws_network_acl.public_nacl.id
   rule_number    = 100
@@ -89,8 +88,9 @@ resource "aws_network_acl_rule" "inbound_ssh" {
   to_port        = 22
 }
 
-# Outbound Rules (Traffic from EC2)
-resource "aws_network_acl_rule" "outbound_ephemeral" {
+# OUTBOUND RULES (FROM EC2)
+# Allow HTTP responses on ephemeral ports (1024-65535)
+resource "aws_network_acl_rule" "outbound_ephemeral_tcp" {
   network_acl_id = aws_network_acl.public_nacl.id
   rule_number    = 100
   egress         = true
@@ -99,4 +99,28 @@ resource "aws_network_acl_rule" "outbound_ephemeral" {
   cidr_block     = "0.0.0.0/0"
   from_port      = 1024
   to_port        = 65535
+}
+
+# Allow DNS (UDP 53) for domain resolution
+resource "aws_network_acl_rule" "outbound_dns" {
+  network_acl_id = aws_network_acl.public_nacl.id
+  rule_number    = 110
+  egress         = true
+  protocol       = "udp"
+  rule_action    = "allow"
+  cidr_block     = "0.0.0.0/0"
+  from_port      = 53
+  to_port        = 53
+}
+
+# Allow ICMP (optional, for network diagnostics)
+resource "aws_network_acl_rule" "outbound_icmp" {
+  network_acl_id = aws_network_acl.public_nacl.id
+  rule_number    = 120
+  egress         = true
+  protocol       = "icmp"
+  rule_action    = "allow"
+  cidr_block     = "0.0.0.0/0"
+  from_port      = -1
+  to_port        = -1
 }
