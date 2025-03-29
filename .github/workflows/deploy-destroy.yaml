@@ -18,7 +18,7 @@ jobs:
   apply:
     name: Apply Infrastructure
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'apply')
+    if: github.event_name == 'push' || (github.event.inputs.action == 'apply')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -46,11 +46,8 @@ jobs:
   destroy:
     name: Destroy Infrastructure
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'destroy'
-    environment:
-      name: production
-      url: https://github.com/${{ github.repository }}
-    needs: apply
+    if: github.event.inputs.action == 'destroy'
+    environment: production
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
