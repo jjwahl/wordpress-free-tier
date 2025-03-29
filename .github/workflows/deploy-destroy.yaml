@@ -32,7 +32,6 @@ jobs:
 
       - name: Terraform Init
         run: |
-          cd terraform
           terraform init -input=false
         working-directory: ./terraform
 
