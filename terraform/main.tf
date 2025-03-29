@@ -29,6 +29,7 @@ resource "aws_db_instance" "wordpress_db" {
 resource "aws_security_group" "web" {
   name        = "wordpress-web"
   description = "Allow HTTP/SSH traffic"
+  vpc_id      = aws_vpc.main.id
 
   ingress {
     from_port   = 80
