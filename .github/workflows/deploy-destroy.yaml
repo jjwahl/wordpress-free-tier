@@ -32,7 +32,7 @@ jobs:
 
       - name: Terraform Init
         run: |
-          terraform init -backend-config="bucket=your-terraform-state-bucket-name" -backend-config="key=wordpress/terraform.tfstate" -backend-config="region=us-east-1"
+          terraform init -backend-config="bucket=terraform-state-bucket-freetier" -backend-config="key=wordpress/terraform.tfstate" -backend-config="region=us-east-1"
         working-directory: ./terraform
 
       - name: Terraform Apply
