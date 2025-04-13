@@ -16,6 +16,7 @@ data "aws_ami" "amazon_linux" {
 
 
 resource "aws_instance" "wordpress" {
+  depends_on = [aws_db_instance.wordpress_db]
   ami = data.aws_ami.amazon_linux.id
   instance_type = "t3.micro"
   key_name = aws_key_pair.wp_key.key_name
@@ -26,4 +27,10 @@ resource "aws_instance" "wordpress" {
   tags = {
     Name = "wordpress-free-tier"
   }
+  user_data = templatefile("user-data.sh", {
+    db_name     = var.db_name
+    db_user     = var.db_user
+    db_password = var.db_password
+    db_endpoint = aws_db_instance.wordpress_db.endpoint
+  })
 }
