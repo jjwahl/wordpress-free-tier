@@ -24,8 +24,6 @@ resource "aws_db_instance" "wordpress_db" {
   password             = var.db_password
   parameter_group_name = "default.mysql8.0"
   skip_final_snapshot = true
-  username = "admin"
-  password = var.db_password
   storage_type = "gp2"
   publicly_accessible = false
 }
@@ -67,7 +65,7 @@ resource "aws_security_group" "rds" {
     to_port         = 3306
     protocol        = "tcp"
     security_groups = [aws_security_group.web.id]  # for EC2!
-  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -89,4 +87,25 @@ resource "aws_cloudwatch_metric_alarm" "ec2_cpu" {
   dimensions = {
     InstanceId = aws_instance.wordpress.id
   }
+}
+
+
+
+
+variable "db_password" {
+  description = "RDS database password"
+  type        = string
+  sensitive   = true
+}
+
+variable "db_name" {
+  description = "WordPress database name"
+  type        = string
+  default     = "wordpress_db"
+}
+
+variable "db_user" {
+  description = "WordPress database user"
+  type        = string
+  default     = "admin"
 }
