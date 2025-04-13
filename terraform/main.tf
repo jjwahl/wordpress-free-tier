@@ -90,24 +90,3 @@ resource "aws_cloudwatch_metric_alarm" "ec2_cpu" {
     InstanceId = aws_instance.wordpress.id
   }
 }
-
-
-
-
-variable "db_password" {
-  description = "RDS database password"
-  type        = string
-  sensitive   = true
-}
-
-variable "db_name" {
-  description = "WordPress database name"
-  type        = string
-  default     = "wordpress_db"
-}
-
-variable "db_user" {
-  description = "WordPress database user"
-  type        = string
-  default     = "admin"
-}
