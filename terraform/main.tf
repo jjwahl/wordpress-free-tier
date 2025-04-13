@@ -67,7 +67,7 @@ resource "aws_security_group" "rds" {
     to_port         = 3306
     protocol        = "tcp"
     security_groups = [aws_security_group.web.id]  # for EC2!
-
+  }
   egress {
     from_port   = 0
     to_port     = 0
