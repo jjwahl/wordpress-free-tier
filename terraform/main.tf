@@ -4,7 +4,7 @@ provider "aws" {
 
 resource "aws_db_subnet_group" "default" {
   name       = "wordpress-subnet-group"
-  subnet_ids = [aws_subnet.public_1.id, aws_subnet.public_2.id]
+  subnet_ids = [aws_subnet.public_1.id, aws_subnet.public_2.id, ]
 
   tags = {
     Name = "WordPress DB Subnet Group"
@@ -25,7 +25,7 @@ resource "aws_db_instance" "wordpress_db" {
   parameter_group_name = "default.mysql8.0"
   skip_final_snapshot = true
   storage_type = "gp2"
-  publicly_accessible = false
+  publicly_accessible = true
 }
 
 resource "aws_security_group" "web" {
@@ -43,6 +43,13 @@ resource "aws_security_group" "web" {
   ingress {
     from_port   = 22
     to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 80
+    to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
