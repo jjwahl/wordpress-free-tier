@@ -13,7 +13,7 @@ resource "aws_db_subnet_group" "default" {
 
 
 resource "aws_db_instance" "wordpress_db" {
-  db_subnet_group_name = aws_db_subnet_group.default.name
+  db_subnet_group_name = aws_db_subnet_group.rds.name
   allocated_storage  = 20
   engine = "mysql"
   engine_version = "8.0.35"
@@ -25,6 +25,28 @@ resource "aws_db_instance" "wordpress_db" {
   skip_final_snapshot = true
   storage_type = "gp2"
   publicly_accessible = true
+  vpc_security_group_ids  = [aws_security_group.rds.id]
+}
+
+# Private subnets for RDS
+resource "aws_subnet" "private_1" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.0.3.0/24"
+  availability_zone = "us-east-1a"
+  tags = { Name = "private-1" }
+}
+
+resource "aws_subnet" "private_2" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.0.4.0/24"
+  availability_zone = "us-east-1b"
+  tags = { Name = "private-2" }
+}
+
+# RDS Subnet Group
+resource "aws_db_subnet_group" "rds" {
+  name       = "rds-subnet-group"
+  subnet_ids = [aws_subnet.private_1.id, aws_subnet.private_2.id]
 }
 
 resource "aws_security_group" "web" {
